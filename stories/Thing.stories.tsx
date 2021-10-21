@@ -19,20 +19,32 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<FloatingLabelWrapperProps> = (args) => (
-  <FloatingLabelWrapper {...args} />
-);
+const Template: Story<FloatingLabelWrapperProps> = (args) => {
+  const [isFocused, setIsFocused] = React.useState(false);
+  const [value, setValue] = React.useState('');
+  return (
+    <FloatingLabelWrapper
+      label="rio test"
+      focused={isFocused}
+      valueGetter={(props) => props.value}
+    >
+      <input
+        value={value}
+        type="text"
+        onFocus={() => {
+          setIsFocused(true);
+        }}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
+      />
+    </FloatingLabelWrapper>
+  );
+};
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
 export const Default = Template.bind({});
-
-Default.args = {
-  children: <input></input>,
-  label: (
-    <label>
-      <b>test label</b>
-    </label>
-  ),
-  focused: true,
-};

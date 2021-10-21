@@ -1,5 +1,4 @@
 import React, { ElementType, useMemo, useState } from 'react';
-import Label from './Label';
 
 type Styling = Partial<{
   className: string;
@@ -12,6 +11,7 @@ export type FloatingLabelWrapperProps = Styling & {
   children: JSX.Element;
   component?: ElementType;
   focused: boolean;
+  valueGetter: (childrenProps: any) => any;
 };
 
 //拦截子组件, 并获取子组件的焦点状态和是否有值的状态。
@@ -25,13 +25,18 @@ const FloatingLabelWrapper = (
     label,
     component,
     focused,
+    valueGetter,
   } = props;
   const childrenOriginProps = children.props;
-  const [shouldShowLabel, setShouldShowLabel] = useState(() => focused);
 
-  const childrenProps = useMemo(() => {
-    return childrenOriginProps;
-  }, []);
+  const shouldShowLabel = useMemo(() => {
+    const value = valueGetter(childrenOriginProps);
+    if (!value) return focused;
+    return true;
+  }, [focused, valueGetter]);
+
+  //TODO: 考虑是否需要对 Children props 进行拦截
+  const childrenProps = childrenOriginProps;
 
   const Root = component || 'div';
 
@@ -40,12 +45,10 @@ const FloatingLabelWrapper = (
   return (
     <Root className={className} style={style}>
       {shouldShowLabel &&
-        (typeof label === 'string' ? <Label>{label}</Label> : label)}
+        (typeof label === 'string' ? <label>{label}</label> : label)}
       {React.cloneElement(children, childrenProps)}
     </Root>
   );
 };
-
-FloatingLabelWrapper.Label = Label;
 
 export default FloatingLabelWrapper;

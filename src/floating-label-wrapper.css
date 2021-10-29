@@ -3,7 +3,7 @@
   border: 1px solid #ddd;
   position: relative;
   display: inline-block;
-  border-radius: 5px;
+  background-color: #fff;
 }
 
 .floating-label-wrapper > input {
@@ -12,12 +12,12 @@
   outline: none;
   width: 100%;
   box-shadow: none;
-  padding: 1em 0.5em;
+  padding: var(--input-padding-y) var(--input-padding-x);
   border-radius: inherit;
 }
 
 .float-label-wrapper--focus {
-  border-color: rgb(43, 116, 226);
+  border-color: var(--active-color);
 }
 
 .floating-label {
@@ -25,14 +25,17 @@
   position: absolute;
   top: 0;
   left: 0;
-  display: block;
   pointer-events: none;
-  transform: translate(0em, 50%);
-  padding-left: 0.5em;
-  line-height: 1.2;
+  transform: translate(0, 0);
+  padding-left: var(--input-padding-x);
+  font-size: var(--floating-label-font-size);
 
-  background-color: white;
-  width: calc(100% - 0.5em);
+  background-color: inherit;
+  width: calc(100% - var(--floating-label-padding-right));
+  height: 100%;
+  color: var(--floating-label-color, #000);
+  display: flex;
+  align-items: center;
   overflow: hidden;
   white-space: nowrap;
   transform-origin: left top;
@@ -41,10 +44,11 @@
 }
 
 .floating-label--float {
-  transform: translate(0.5em, -50%);
+  transform: translate(var(--floating-label-padding-left), -50%);
   display: inline-block;
-  color: rgb(43, 116, 226);
-  font-size: 0.75em;
+  height: auto;
+  color: var(--active-color);
+  font-size: var(--floating-label-font-size--floating);
   padding: 0 3px;
   width: auto;
 }

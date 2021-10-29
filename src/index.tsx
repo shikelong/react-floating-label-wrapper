@@ -7,7 +7,19 @@ type Styling = Partial<{
   style: React.CSSProperties;
 }>;
 
+const defaultVariables = {
+  '--input-padding-y': '1em',
+  '--input-padding-x': '0.6em',
+  '--floating-label-padding-left': '0.3em',
+  '--floating-label-padding-right': '0.5em',
+  '--floating-label-font-size': '0.9em',
+  '--floating-label-font-size--floating': '0.75em',
+  '--floating-label-color': 'rgba(0, 0, 0, 0.5)',
+  '--active-color': 'rgb(43, 116, 226)',
+};
+
 export type FloatingLabelWrapperProps = Styling & {
+  cssVariables?: Partial<typeof defaultVariables>;
   label: string;
   children: JSX.Element;
   //the root container's element type.
@@ -28,6 +40,7 @@ const FloatingLabelWrapper = (
     component,
     focused,
     valueGetter,
+    cssVariables = {},
   } = props;
   const childrenOriginProps = children.props;
 
@@ -37,12 +50,9 @@ const FloatingLabelWrapper = (
     return true;
   }, [focused, valueGetter]);
 
-  //TODO: 考虑是否需要对 Children props 进行拦截
   const childrenProps = childrenOriginProps;
 
   const Root = component || 'div';
-
-  //TODO: props check logic
 
   return (
     <Root
@@ -50,7 +60,7 @@ const FloatingLabelWrapper = (
         [className]: className,
         'float-label-wrapper--focus': focused,
       })}
-      style={style}
+      style={{ ...defaultVariables, ...cssVariables, ...style }}
     >
       <label
         className={classNames('floating-label', {

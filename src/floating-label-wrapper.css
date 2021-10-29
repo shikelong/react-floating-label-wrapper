@@ -6,7 +6,7 @@
   background-color: #fff;
 }
 
-.floating-label-wrapper > input {
+.floating-label-wrapper input {
   box-sizing: border-box;
   border: none;
   outline: none;
@@ -16,8 +16,16 @@
   border-radius: inherit;
 }
 
+.floating-label-wrapper input::placeholder {
+  color: transparent;
+}
+
 .float-label-wrapper--focus {
   border-color: var(--active-color);
+}
+
+.float-label-wrapper--focus input::placeholder {
+  color: var(--floating-label-color);
 }
 
 .floating-label {
@@ -29,15 +37,16 @@
   transform: translate(0, 0);
   padding-left: var(--input-padding-x);
   font-size: var(--floating-label-font-size);
-
   background-color: inherit;
-  width: calc(100% - var(--floating-label-padding-right));
+  /* border-radius: inherit;
   height: 100%;
+  width: 100%; */
   color: var(--floating-label-color, #000);
   display: flex;
   align-items: center;
   overflow: hidden;
   white-space: nowrap;
+  transform: translate(0, var(--input-padding-y));
   transform-origin: left top;
   transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
     transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;

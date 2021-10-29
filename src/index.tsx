@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { ElementType, useMemo } from 'react';
 import './floating-label-wrapper.css';
+import { defaultValueGetter } from './utils';
 
 type Styling = Partial<{
   className: string;
@@ -25,7 +26,8 @@ export type FloatingLabelWrapperProps = Styling & {
   //the root container's element type.
   component?: ElementType;
   focused: boolean;
-  valueGetter: (childrenProps: any) => any;
+  valueGetter?: (childrenProps: any) => any;
+  placeholderProperty?: string;
 };
 
 //拦截子组件, 并获取子组件的焦点状态和是否有值的状态。
@@ -39,7 +41,7 @@ const FloatingLabelWrapper = (
     label,
     component,
     focused,
-    valueGetter,
+    valueGetter = defaultValueGetter,
     cssVariables = {},
   } = props;
   const childrenOriginProps = children.props;

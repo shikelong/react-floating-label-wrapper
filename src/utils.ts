@@ -8,3 +8,7 @@ export const isChildrenValid = (children: React.ReactChild): boolean => {
     return false;
   }
 };
+
+export const defaultValueGetter = (props: any) => {
+  return props.value;
+};

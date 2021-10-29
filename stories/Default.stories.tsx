@@ -58,12 +58,12 @@ const Template = (props) => {
     <FloatingLabelWrapper
       label={props.label}
       focused={isFocused}
-      valueGetter={(childProps) => childProps.value}
       className={props.className}
       style={props.style}
+      cssVariables={props.cssVariables}
     >
       <input
-        placeholder="input here."
+        placeholder="this is a long placeholder"
         value={value}
         type={props.inputType}
         onFocus={() => {
@@ -102,6 +102,7 @@ export const CustomClassNameAndStyle = Template.bind(
   {
     label: 'User Name',
     className: 'custom-class',
-    style: { borderColor: 'red', margin: 20, backgroundColor: '#f2f252' },
+    cssVariables: { '--active-color': 'red' },
+    style: { borderRadius: '5px' },
   }
 );

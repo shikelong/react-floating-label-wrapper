@@ -1,0 +1,50 @@
+.floating-label-wrapper {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  position: relative;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.floating-label-wrapper > input {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 100%;
+  box-shadow: none;
+  padding: 1em 0.5em;
+  border-radius: inherit;
+}
+
+.float-label-wrapper--focus {
+  border-color: rgb(43, 116, 226);
+}
+
+.floating-label {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  pointer-events: none;
+  transform: translate(0em, 50%);
+  padding-left: 0.5em;
+  line-height: 1.2;
+
+  background-color: white;
+  width: calc(100% - 0.5em);
+  overflow: hidden;
+  white-space: nowrap;
+  transform-origin: left top;
+  transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.floating-label--float {
+  transform: translate(0.5em, -50%);
+  display: inline-block;
+  color: rgb(43, 116, 226);
+  font-size: 0.75em;
+  padding: 0 3px;
+  width: auto;
+}

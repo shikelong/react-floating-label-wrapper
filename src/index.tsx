@@ -1,4 +1,6 @@
-import React, { ElementType, useMemo, useState } from 'react';
+import classNames from 'classnames';
+import React, { ElementType, useMemo } from 'react';
+import './floating-label-wrapper.css';
 
 type Styling = Partial<{
   className: string;
@@ -6,9 +8,9 @@ type Styling = Partial<{
 }>;
 
 export type FloatingLabelWrapperProps = Styling & {
-  //the root container's element type.
-  label: string | JSX.Element;
+  label: string;
   children: JSX.Element;
+  //the root container's element type.
   component?: ElementType;
   focused: boolean;
   valueGetter: (childrenProps: any) => any;
@@ -43,9 +45,20 @@ const FloatingLabelWrapper = (
   //TODO: props check logic
 
   return (
-    <Root className={className} style={style}>
-      {shouldShowLabel &&
-        (typeof label === 'string' ? <label>{label}</label> : label)}
+    <Root
+      className={classNames('floating-label-wrapper', {
+        [className]: className,
+        'float-label-wrapper--focus': focused,
+      })}
+      style={style}
+    >
+      <label
+        className={classNames('floating-label', {
+          'floating-label--float': shouldShowLabel,
+        })}
+      >
+        {label}
+      </label>
       {React.cloneElement(children, childrenProps)}
     </Root>
   );

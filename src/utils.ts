@@ -23,3 +23,10 @@ export const defaultVariables = {
   '--floating-label-color': 'rgba(0, 0, 0, 0.5)',
   '--active-color': 'rgb(43, 116, 226)',
 };
+
+export const warning = (message: string) => {
+  if (process.env.NODE_ENV !== 'production') {
+    throw new Error(message);
+  }
+  console.error(message);
+};

@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import React, { ElementType, useMemo } from 'react';
 import './floating-label-wrapper.css';
-import { defaultValueGetter, defaultVariables } from './utils';
+import {
+  defaultValueGetter,
+  defaultVariables,
+  isChildrenValid,
+  warning,
+} from './utils';
 
 type Styling = Partial<{
   className: string;
@@ -33,6 +38,7 @@ const FloatingLabelWrapper = (
     valueGetter = defaultValueGetter,
     cssVariables = {},
   } = props;
+
   const childrenOriginProps = children.props;
 
   const shouldShowLabel = useMemo(() => {
@@ -40,6 +46,11 @@ const FloatingLabelWrapper = (
     if (!value) return focused;
     return true;
   }, [focused, valueGetter]);
+
+  if (!isChildrenValid(children)) {
+    warning('children type error, children must be a single react component!');
+    return children;
+  }
 
   const childrenProps = childrenOriginProps;
 

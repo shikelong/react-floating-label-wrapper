@@ -107,3 +107,29 @@ export const CustomClassNameAndStyle = Template.bind(
     style: { borderRadius: '5px' },
   }
 );
+
+export const IndirectWrapInput = () => {
+  const [isFocused, setIsFocused] = React.useState(false);
+  const [value, setValue] = React.useState('');
+  return (
+    <FloatingLabelWrapper label={'user name'} focused={isFocused}>
+      <div>
+        Please input your name:
+        <input
+          placeholder="this is a long placeholder"
+          value={value}
+          type={'text'}
+          onFocus={() => {
+            setIsFocused(true);
+          }}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+          onBlur={() => {
+            setIsFocused(false);
+          }}
+        />
+      </div>
+    </FloatingLabelWrapper>
+  );
+};

@@ -44,7 +44,11 @@
   align-items: center;
   overflow: hidden;
   white-space: nowrap;
+  width: 100%;
   transform: translate(0, var(--input-padding-y));
+  max-width: calc(
+    100% - var(--floating-label-margin-right, var(--input-padding-x))
+  );
   transform-origin: left top;
   transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
     transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;

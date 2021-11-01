@@ -11,7 +11,10 @@ import {
 type Styling = Partial<{
   className: string;
   style: React.CSSProperties;
-  cssVariables: Partial<typeof defaultVariables>;
+  cssVariables: Partial<{
+    '--floating-label-margin-right': string;
+  }> &
+    Partial<typeof defaultVariables>;
 }>;
 
 export type FloatingLabelWrapperProps = Styling & {

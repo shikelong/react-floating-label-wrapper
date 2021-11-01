@@ -13,7 +13,7 @@ module.exports = {
         ],
         inject: false,
         // only write out CSS for the first bundle (avoids pointless extra files):
-        extract: !!options.writeMeta,
+        extract: true,
       })
     );
     return config;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import FloatingLabelWrapper, { FloatingLabelWrapperProps } from '../src';
 
+//test CI
 const meta: Meta = {
   title: '1. Wrap HTML <Input>',
   component: FloatingLabelWrapper,

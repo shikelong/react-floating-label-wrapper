@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import FloatingLabelWrapper, { FloatingLabelWrapperProps } from '../src';
+import FloatingLabelWrapper, { FloatingLabelWrapperProps, Bind } from '../src';
 
 //test CI
 const meta: Meta = {
@@ -108,28 +108,51 @@ export const CustomClassNameAndStyle = Template.bind(
   }
 );
 
-export const IndirectWrapInput = () => {
-  const [isFocused, setIsFocused] = React.useState(false);
-  const [value, setValue] = React.useState('');
+export const BindPartialProps = () => {
+  const [isUserNameFocused, setIsUserNameFocused] = React.useState(false);
+  const [userName, setUserName] = React.useState('');
+  const [age, setAge] = React.useState('');
+  const [isAgeFocused, setIsAgeFocused] = React.useState(false);
+
+  const BlueInput = Bind({
+    cssVariables: { '--active-color': 'blue' },
+  });
+
   return (
-    <FloatingLabelWrapper label={'user name'} focused={isFocused}>
-      <div>
-        Please input your name:
+    <div>
+      <BlueInput label={'userName'} focused={isUserNameFocused}>
         <input
-          placeholder="this is a long placeholder"
-          value={value}
+          placeholder="Please input your name"
+          value={userName}
           type={'text'}
           onFocus={() => {
-            setIsFocused(true);
+            setIsUserNameFocused(true);
           }}
           onChange={(e) => {
-            setValue(e.target.value);
+            setUserName(e.target.value);
           }}
           onBlur={() => {
-            setIsFocused(false);
+            setIsUserNameFocused(false);
           }}
         />
-      </div>
-    </FloatingLabelWrapper>
+      </BlueInput>
+      <div style={{ margin: '1em' }} />
+      <BlueInput label={'Age'} focused={isAgeFocused}>
+        <input
+          placeholder="please input your age"
+          value={age}
+          type={'text'}
+          onFocus={() => {
+            setIsAgeFocused(true);
+          }}
+          onChange={(e) => {
+            setAge(e.target.value);
+          }}
+          onBlur={() => {
+            setIsAgeFocused(false);
+          }}
+        />
+      </BlueInput>
+    </div>
   );
 };

@@ -27,7 +27,6 @@ export type FloatingLabelWrapperProps = Styling & {
   };
   //if your input is uncontrolled, you must pass valueGetter function to let this wrapper know if exist value..
   valueGetter?: () => any;
-  placeholderProperty?: string;
 };
 
 const defaultInputPropsName: Required<

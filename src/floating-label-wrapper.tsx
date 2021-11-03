@@ -1,8 +1,7 @@
 import classNames from 'classnames';
-import React, { ElementType, useMemo } from 'react';
+import React, { ElementType, useMemo, useState } from 'react';
 import './floating-label-wrapper.css';
 import { defaultVariables } from './utils/defaultVariables';
-import { defaultValueGetter } from './utils/defaultValueGetter';
 import { isChildrenValid } from './utils/isChildrenValid';
 import { warning } from './utils/warning';
 
@@ -20,9 +19,23 @@ export type FloatingLabelWrapperProps = Styling & {
   children: JSX.Element;
   //the root container's element type.
   component?: ElementType;
-  focused: boolean;
-  valueGetter?: (childrenProps: any) => any;
+  inputPropsName?: {
+    //if your input is controlled, wrapper will get value from children's value prop.
+    value?: string;
+    onFocus?: string;
+    onBlur?: string;
+  };
+  //if your input is uncontrolled, you must pass valueGetter function to let this wrapper know if exist value..
+  valueGetter?: () => any;
   placeholderProperty?: string;
+};
+
+const defaultInputPropsName: Required<
+  FloatingLabelWrapperProps['inputPropsName']
+> = {
+  value: 'value',
+  onFocus: 'onFocus',
+  onBlur: 'onBlur',
 };
 
 //拦截子组件, 并获取子组件的焦点状态和是否有值的状态。
@@ -35,25 +48,62 @@ const FloatingLabelWrapper = (
     style = {},
     label,
     component,
-    focused,
-    valueGetter = defaultValueGetter,
+    valueGetter,
     cssVariables = {},
+    inputPropsName = {
+      value: 'value',
+      onFocus: 'onFocus',
+      onBlur: 'onBlur',
+    },
   } = props;
 
   const childrenOriginProps = children.props;
 
+  const [isFocused, setIsFocused] = useState(false);
+
   const shouldShowLabel = useMemo(() => {
-    const value = valueGetter(childrenOriginProps);
-    if (!value) return focused;
+    const value =
+      valueGetter && typeof valueGetter === 'function'
+        ? valueGetter()
+        : childrenOriginProps[
+            inputPropsName.value ?? defaultInputPropsName.value
+          ];
+    if (!value) return isFocused;
     return true;
-  }, [focused, valueGetter]);
+  }, [isFocused, inputPropsName.value, childrenOriginProps]);
 
   if (!isChildrenValid(children)) {
     warning('children type error, children must be a single react component!');
     return children;
   }
 
-  const childrenProps = childrenOriginProps;
+  if (
+    !childrenOriginProps.hasOwnProperty(inputPropsName.value) &&
+    !props.valueGetter
+  ) {
+    warning(
+      `children props error, children be must have correct value prop (for controlled component) or valueGetter (for uncontrolled component), current value prop is '${inputPropsName.value}'`
+    );
+    return children;
+  }
+
+  const childrenProps = {
+    ...childrenOriginProps,
+    //@ts-ignore
+    [inputPropsName.onFocus ?? defaultInputPropsName.onFocus]: (e) => {
+      setIsFocused(true);
+      childrenOriginProps[
+        inputPropsName.onFocus ?? defaultInputPropsName.onFocus
+      ]?.(e);
+    },
+    //@ts-ignore
+    [inputPropsName.onBlur ?? defaultInputPropsName.onBlur]: (e) => {
+      setIsFocused(false);
+      childrenOriginProps[
+        inputPropsName.onBlur ?? defaultInputPropsName.onBlur
+      ]?.(e);
+    },
+  };
 
   const Root = component || 'div';
 
@@ -61,7 +111,7 @@ const FloatingLabelWrapper = (
     <Root
       className={classNames('floating-label-wrapper', {
         [className]: className,
-        'float-label-wrapper--focus': focused,
+        'float-label-wrapper--focus': isFocused,
       })}
       style={{ ...defaultVariables, ...cssVariables, ...style }}
     >

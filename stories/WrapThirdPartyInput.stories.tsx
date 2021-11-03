@@ -17,33 +17,26 @@ const meta: Meta = {
 export default meta;
 
 export const WithMiddleLevelDOM = () => {
-  const [isFocused, setIsFocused] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const inputRef = React.useRef(null);
+
   return (
     <div>
       <FloatingLabelWrapper
         label={'user name'}
-        focused={isFocused}
         valueGetter={() => {
-          return value;
+          if (!inputRef || !inputRef.current) {
+            return '';
+          }
+          return inputRef.current.value;
         }}
       >
         <div>
           <input
+            ref={inputRef}
             placeholder="this is a long placeholder"
-            value={value}
             type={'text'}
             minLength={6}
             maxLength={10}
-            onFocus={() => {
-              setIsFocused(true);
-            }}
-            onChange={(e) => {
-              setValue(e.target.value);
-            }}
-            onBlur={() => {
-              setIsFocused(false);
-            }}
           />
           {/* <p>Not recommend render other element here, because react-floating-label-wrapper will wrap children and render a border surround here.</p> */}
         </div>
@@ -62,12 +55,10 @@ const options = [
 ];
 
 export const WrapReactSelect = () => {
-  const [isFocused, setIsFocused] = React.useState(false);
   const [value, setValue] = React.useState(null);
   return (
     <FloatingLabelWrapper
       label={'prefer fruit?'}
-      focused={isFocused}
       cssVariables={{
         //adjust placeholder label's max width to fit react-select's select icon.
         '--floating-label-margin-right': '40px',
@@ -79,6 +70,9 @@ export const WrapReactSelect = () => {
         options={options}
         value={value}
         isClearable
+        onBlur={(e) => {
+          console.log('on blur: ', e);
+        }}
         styles={{
           control: (base: any) => ({
             ...base,
@@ -89,32 +83,24 @@ export const WrapReactSelect = () => {
         onChange={(e) => {
           setValue(e);
         }}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
       ></ReactSelect>
     </FloatingLabelWrapper>
   );
 };
 
 export const WrapReactDatePicker = () => {
-  const [isFocused, setIsFocused] = React.useState(false);
   const [value, setValue] = React.useState(new Date());
   return (
-    <FloatingLabelWrapper label={'birthday'} focused={isFocused}>
+    <FloatingLabelWrapper
+      label={'birthday'}
+      inputPropsName={{
+        value: 'selected',
+      }}
+    >
       <ReactDatePicker
         selected={value}
         onChange={(date) => {
           setValue(date as Date);
-        }}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
-        onBlur={() => {
-          setIsFocused(false);
         }}
       ></ReactDatePicker>
     </FloatingLabelWrapper>

@@ -53,12 +53,10 @@ const meta: Meta = {
 export default meta;
 
 const Template = (props) => {
-  const [isFocused, setIsFocused] = React.useState(false);
   const [value, setValue] = React.useState(props.defaultValue);
   return (
     <FloatingLabelWrapper
       label={props.label}
-      focused={isFocused}
       className={props.className}
       style={props.style}
       cssVariables={props.cssVariables}
@@ -67,14 +65,8 @@ const Template = (props) => {
         placeholder="this is a long placeholder"
         value={value}
         type={props.inputType}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
         onChange={(e) => {
           setValue(e.target.value);
-        }}
-        onBlur={() => {
-          setIsFocused(false);
         }}
       />
     </FloatingLabelWrapper>
@@ -109,10 +101,8 @@ export const CustomClassNameAndStyle = Template.bind(
 );
 
 export const BindPartialProps = () => {
-  const [isUserNameFocused, setIsUserNameFocused] = React.useState(false);
   const [userName, setUserName] = React.useState('');
   const [age, setAge] = React.useState('');
-  const [isAgeFocused, setIsAgeFocused] = React.useState(false);
 
   const BlueInput = Bind({
     cssVariables: { '--active-color': 'blue' },
@@ -120,36 +110,24 @@ export const BindPartialProps = () => {
 
   return (
     <div>
-      <BlueInput label={'userName'} focused={isUserNameFocused}>
+      <BlueInput label={'userName'}>
         <input
           placeholder="Please input your name"
           value={userName}
           type={'text'}
-          onFocus={() => {
-            setIsUserNameFocused(true);
-          }}
           onChange={(e) => {
             setUserName(e.target.value);
-          }}
-          onBlur={() => {
-            setIsUserNameFocused(false);
           }}
         />
       </BlueInput>
       <div style={{ margin: '1em' }} />
-      <BlueInput label={'Age'} focused={isAgeFocused}>
+      <BlueInput label={'Age'}>
         <input
           placeholder="please input your age"
           value={age}
           type={'text'}
-          onFocus={() => {
-            setIsAgeFocused(true);
-          }}
           onChange={(e) => {
             setAge(e.target.value);
-          }}
-          onBlur={() => {
-            setIsAgeFocused(false);
           }}
         />
       </BlueInput>

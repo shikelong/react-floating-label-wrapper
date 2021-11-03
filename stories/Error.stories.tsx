@@ -53,33 +53,64 @@ const meta: Meta = {
 
 export default meta;
 
-export const Error = () => {
-  const [isFocused, setIsFocused] = React.useState(false);
+export const ChildrenMustBeSingleElement = () => {
   const [value, setValue] = React.useState('');
 
   return (
-    <FloatingLabelWrapper
-      label={'user Name'}
-      focused={isFocused}
-      valueGetter={() => {
-        return value;
-      }}
-    >
+    <FloatingLabelWrapper label={'user Name'}>
       <input
         placeholder="placeholder"
         value={value}
         type={'text'}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
         onChange={(e) => {
           setValue(e.target.value);
-        }}
-        onBlur={() => {
-          setIsFocused(false);
         }}
       />
       <input type="text" placeholder="input 2" />
     </FloatingLabelWrapper>
+  );
+};
+
+export const UnControlledComponentMustPassValueGetter = () => {
+  return (
+    <FloatingLabelWrapper label={'user Name'}>
+      <input placeholder="placeholder" type={'text'} />
+    </FloatingLabelWrapper>
+  );
+};
+
+export const ControlledComponentMustPassCorrectValueProps = () => {
+  const [value, setValue] = React.useState('');
+  return (
+    <FloatingLabelWrapper
+      label={'user Name'}
+      inputPropsName={{
+        value: 'value1',
+      }}
+    >
+      <input
+        placeholder="placeholder"
+        type={'text'}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </FloatingLabelWrapper>
+  );
+};
+
+export const CorrectWrapCaseWhenHasMiddleLevelDOM = () => {
+  return (
+    <div>
+      <FloatingLabelWrapper label={'user name'}>
+        <div>
+          <input
+            placeholder="this is a long placeholder"
+            type={'text'}
+            minLength={6}
+            maxLength={10}
+          />
+        </div>
+      </FloatingLabelWrapper>
+    </div>
   );
 };

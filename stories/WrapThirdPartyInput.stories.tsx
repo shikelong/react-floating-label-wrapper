@@ -16,38 +16,6 @@ const meta: Meta = {
 
 export default meta;
 
-export const WithMiddleLevelDOM = () => {
-  const inputRef = React.useRef(null);
-
-  return (
-    <div>
-      <FloatingLabelWrapper
-        label={'user name'}
-        valueGetter={() => {
-          if (!inputRef || !inputRef.current) {
-            return '';
-          }
-          return inputRef.current.value;
-        }}
-      >
-        <div>
-          <input
-            ref={inputRef}
-            placeholder="this is a long placeholder"
-            type={'text'}
-            minLength={6}
-            maxLength={10}
-          />
-          {/* <p>Not recommend render other element here, because react-floating-label-wrapper will wrap children and render a border surround here.</p> */}
-        </div>
-      </FloatingLabelWrapper>
-      <p>
-        <pre>User name's length should between 6 and 10</pre>
-      </p>
-    </div>
-  );
-};
-
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { ElementType, useMemo, useState } from 'react';
 import './floating-label-wrapper.css';
+import { judgeHasValue as defaultJudgeHasValue } from './utils/judgeHasValue';
 import { defaultVariables } from './utils/defaultVariables';
 import { isChildrenValid } from './utils/isChildrenValid';
 import { warning } from './utils/warning';
@@ -25,8 +26,8 @@ export type FloatingLabelWrapperProps = Styling & {
     onFocus?: string;
     onBlur?: string;
   };
-  //if your input is uncontrolled, you must pass valueGetter function to let this wrapper know if exist value..
-  valueGetter?: () => any;
+  //if your want override default hasValue function. you can pass this function to let this wrapper know if exist value..
+  judgeHasValue?: () => boolean;
 };
 
 const defaultInputPropsName: Required<
@@ -47,7 +48,7 @@ const FloatingLabelWrapper = (
     style = {},
     label,
     component,
-    valueGetter,
+    judgeHasValue = defaultJudgeHasValue,
     cssVariables = {},
     inputPropsName = {
       value: 'value',
@@ -62,12 +63,9 @@ const FloatingLabelWrapper = (
 
   const shouldShowLabel = useMemo(() => {
     const value =
-      valueGetter && typeof valueGetter === 'function'
-        ? valueGetter()
-        : childrenOriginProps[
-            inputPropsName.value ?? defaultInputPropsName.value
-          ];
-    if (!value) return isFocused;
+      childrenOriginProps[inputPropsName.value ?? defaultInputPropsName.value];
+    const hasValue = judgeHasValue(value);
+    if (!hasValue) return isFocused;
     return true;
   }, [isFocused, inputPropsName.value, childrenOriginProps]);
 
@@ -76,12 +74,9 @@ const FloatingLabelWrapper = (
     return children;
   }
 
-  if (
-    !childrenOriginProps.hasOwnProperty(inputPropsName.value) &&
-    !props.valueGetter
-  ) {
+  if (!childrenOriginProps.hasOwnProperty(inputPropsName.value)) {
     warning(
-      `children props error, children be must have correct value prop (for controlled component) or valueGetter (for uncontrolled component), current value prop is '${inputPropsName.value}'`
+      `children props error, children be must be controlled component and have correct value prop , current value prop is '${inputPropsName.value}'`
     );
     return children;
   }

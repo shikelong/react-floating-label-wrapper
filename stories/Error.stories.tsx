@@ -71,7 +71,7 @@ export const ChildrenMustBeSingleElement = () => {
   );
 };
 
-export const UnControlledComponentMustPassValueGetter = () => {
+export const ChildrenInputMustBeControlledComponents = () => {
   return (
     <FloatingLabelWrapper label={'user Name'}>
       <input placeholder="placeholder" type={'text'} />

@@ -105,7 +105,7 @@ export const BindPartialProps = () => {
   const [age, setAge] = React.useState('');
 
   const BlueInput = Bind({
-    cssVariables: { '--active-color': 'blue' },
+    cssVariables: { '--active-color': 'purple' },
   });
 
   return (

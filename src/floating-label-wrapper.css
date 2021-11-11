@@ -59,7 +59,7 @@
   display: inline-block;
   height: auto;
   color: var(--active-color);
-  font-size: var(--floating-label-font-size--floating);
+  font-size: var(--floating-label-font-size--floating) !important;
   padding: 0 3px;
   width: auto;
 }
